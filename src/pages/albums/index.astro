@@ -10,9 +10,9 @@ const cards = albums.map((a) => ({
   cover: getAlbumCover(a.slug, a.cover),
 }));
 
-// 五个专辑的编辑感排布：宽 / 窄 / 窄 / 宽 / 通栏
-const spans = ['span 8', 'span 4', 'span 4', 'span 8', 'span 12'];
-const variants = ['wide', 'tall', 'tall', 'wide', 'wide'] as const;
+// 四个专辑的编辑感排布：宽 / 窄 / 窄 / 宽
+const spans = ['span 8', 'span 4', 'span 4', 'span 8'];
+const variants = ['wide', 'tall', 'tall', 'wide'] as const;
 ---
 
 <Base title={`作品 · ${site.titleSuffix}`}>
@@ -21,7 +21,7 @@ const variants = ['wide', 'tall', 'tall', 'wide', 'wide'] as const;
       <p class="label">Works</p>
       <h1 class="display-lg">作品</h1>
       <p class="page-head__sub">
-        按主题整理的 {albums.length} 个专辑 —— 从城市深夜到山海之间。
+        按主题整理的 {albums.length} 组人像 —— 甜、酷、光影，和人生里值得被记住的时刻。
       </p>
     </header>
 
@@ -117,7 +117,7 @@ const variants = ['wide', 'tall', 'tall', 'wide', 'wide'] as const;
   .filter-bar button.is-active {
     border-color: var(--accent);
     color: var(--accent-hover);
-    background: rgba(200, 169, 126, 0.08);
+    background: rgba(193, 99, 125, 0.09);
   }
 
   .albums-grid {

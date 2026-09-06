@@ -25,3 +25,6 @@ yarn-error.log*
 
 # preview server artifacts
 preview.log
+
+# local reference archive (old generated placeholder assets - not committed)
+legacy-assets/

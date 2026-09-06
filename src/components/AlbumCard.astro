@@ -31,7 +31,7 @@ const aspect =
       sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 640px"
       loading={eager ? 'eager' : 'lazy'}
     />
-    <span class="tag">{album.category}</span>
+    <span class="tag">{album.tag}</span>
   </div>
   <div class="meta">
     <div>
@@ -45,7 +45,7 @@ const aspect =
 <style>
   .album-card { display: block; }
 
-  .media { border-radius: 6px; }
+  .media { border-radius: 10px; box-shadow: 0 18px 44px rgba(150, 110, 95, 0.1); }
 
   .tag {
     position: absolute;

@@ -5,7 +5,7 @@ import AlbumCard from '../components/AlbumCard.astro';
 import { site } from '../data/site';
 import { albums } from '../data/albums';
 import { getAlbumCover } from '../lib/photos';
-import heroImg from '../assets/hero.png';
+import heroImg from '../assets/hero.jpg';
 
 const featured = albums.slice(0, 4).map((a) => ({
   album: a,
@@ -20,38 +20,43 @@ const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
 <Base title={`${site.brand} · ${site.name} 摄影作品集`}>
   <!-- Hero -->
   <section class="hero" aria-label="首页主视觉">
-    <div class="hero__media">
-      <Image
-        src={heroImg}
-        alt="暮色中的雾霭群山"
-        widths={[960, 1440, 1920]}
-        sizes="100vw"
-        loading="eager"
-        class="hero__img"
-      />
-      <div class="hero__scrim" aria-hidden="true"></div>
-    </div>
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <p class="label">{site.role} · {site.location}</p>
+        <h1 class="display-xl">
+          把每一次<br /><em>心动</em>，都留在光里
+        </h1>
+        <p class="hero__intro">
+          我是 {site.name}，一名{site.role}。用镜头捕捉每个人最真实、也最发亮的那个瞬间——
+          不摆拍，只记录喜欢。
+        </p>
+        <div class="hero__cta">
+          <a href="/albums/" class="btn btn--solid">进入作品</a>
+          <a href="/contact/" class="btn">约拍合作</a>
+        </div>
+      </div>
 
-    <div class="container hero__content">
-      <p class="label">{site.role} · {site.location}</p>
-      <h1 class="display-xl">
-        在光与暗的<em>交界处</em><br />按下快门
-      </h1>
-      <p class="hero__intro">
-        我是 {site.name}，记录城市夜色、山海气象，与每一个认真生活的人。
-      </p>
-      <div class="hero__cta">
-        <a href="/albums/" class="btn btn--solid">进入作品</a>
-        <a href="/contact/" class="btn">约拍合作</a>
+      <div class="hero__visual">
+        <div class="hero__frame">
+          <Image
+            src={heroImg}
+            alt="黄昏逆光下的人像，发丝被染成琥珀色"
+            widths={[640, 960, 1200]}
+            sizes="(max-width: 760px) 100vw, 50vw"
+            loading="eager"
+            class="hero__img"
+          />
+        </div>
+        <span class="hero__badge" aria-hidden="true">{albums.length} 组人像作品</span>
       </div>
     </div>
 
     <div class="hero__meta" aria-hidden="true">
       <span>{site.since} 年拿起相机</span>
       <span class="dot"></span>
-      <span>{albums.length} 个专辑</span>
+      <span>{albums.length} 个主题专辑</span>
       <span class="dot"></span>
-      <span>{yearSpan} 年快门生涯</span>
+      <span>{yearSpan} 年，专注人像</span>
     </div>
   </section>
 
@@ -87,8 +92,8 @@ const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
     <div class="container statement__inner js-reveal">
       <hr class="hairline" />
       <blockquote>
-        摄影不是记录世界本来的样子，<br />
-        而是记录<em>它打动我的那一秒</em>。
+        人像想留住的，从来不是一张脸，<br />
+        而是你<em>最松弛那一刻</em>的样子。
       </blockquote>
       <hr class="hairline" />
       <a href="/about/" class="btn">认识镜头背后的我</a>
@@ -100,41 +105,25 @@ const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
   /* Hero */
   .hero {
     position: relative;
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    padding-block: 0;
+    padding-top: calc(var(--nav-h) + 2.5rem);
     overflow: hidden;
-  }
-
-  .hero__media {
-    position: absolute;
-    inset: 0;
-  }
-
-  .hero__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero__scrim {
-    position: absolute;
-    inset: 0;
     background:
-      linear-gradient(to top, rgba(13, 13, 15, 0.92), rgba(13, 13, 15, 0.15) 45%),
-      linear-gradient(to right, rgba(13, 13, 15, 0.55), transparent 60%);
+      radial-gradient(60% 60% at 86% 16%, rgba(193, 99, 125, 0.14), transparent 62%),
+      radial-gradient(52% 52% at 8% 88%, rgba(214, 171, 140, 0.18), transparent 62%);
   }
 
-  .hero__content {
-    position: relative;
-    z-index: 1;
-    padding-top: var(--nav-h);
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
   }
 
-  .hero__content .label { margin-bottom: 1.4rem; }
+  .hero__text { padding-top: 2rem; }
 
-  .hero__content h1 {
+  .hero__text .label { margin-bottom: 1.4rem; }
+
+  .hero__text h1 {
     margin-bottom: 1.5rem;
     max-width: 12ch;
   }
@@ -148,7 +137,7 @@ const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
     max-width: 42ch;
     color: var(--text-secondary);
     margin-bottom: 2.5rem;
-    font-size: 1.02rem;
+    font-size: 1.05rem;
   }
 
   .hero__cta {
@@ -157,24 +146,61 @@ const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
     flex-wrap: wrap;
   }
 
-  .hero__meta {
+  .hero__visual {
+    position: relative;
+  }
+
+  .hero__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 999px 999px 22px 22px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 40px 90px rgba(193, 99, 125, 0.18);
+  }
+
+  .hero__frame:after {
+    content: '';
     position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__badge {
+    position: absolute;
+    bottom: 8%;
+    left: -6%;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 16px 40px rgba(150, 110, 95, 0.16);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+  }
+
+  .hero__meta {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1.25rem;
+    padding: 3.5rem 0 0;
     font-size: 0.72rem;
     letter-spacing: 0.22em;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     white-space: nowrap;
   }
 
   .dot {
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: var(--accent);
   }
@@ -232,6 +258,10 @@ const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
       grid-column: 1 / -1;
       padding-top: 0;
     }
-    .hero__meta { font-size: 0.62rem; gap: 0.8rem; }
+    .hero { padding-top: calc(var(--nav-h) + 1.5rem); }
+    .hero__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero__text { padding-top: 0; }
+    .hero__meta { flex-wrap: wrap; gap: 0.8rem; }
+    .hero__badge { left: auto; right: -4%; }
   }
 </style>

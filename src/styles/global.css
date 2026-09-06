@@ -1,19 +1,19 @@
 /* ============================================
-   暗色设计系统 —— 摄影作品集
-   背景：近黑 · 主角：照片 · 点缀：香槟金
+   明亮柔软设计系统 —— 德芙殿下 · 人像摄影作品集
+   背景：暖奶油 · 主角：人像 · 点缀：玫瑰粉
    ============================================ */
 
 :root {
-  --bg: #0d0d0f;
-  --bg-elevated: #141417;
-  --bg-overlay: rgba(13, 13, 15, 0.72);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --text: #ececee;
-  --text-secondary: #a0a0a8;
-  --text-muted: #6a6a72;
-  --accent: #c8a97e;
-  --accent-hover: #dcc09a;
+  --bg: #faf7f3;
+  --bg-elevated: #f1ebe4;
+  --bg-overlay: rgba(250, 247, 243, 0.86);
+  --border: rgba(150, 110, 95, 0.16);
+  --border-strong: rgba(150, 110, 95, 0.28);
+  --text: #3d3231;
+  --text-secondary: #8a766f;
+  --text-muted: #b29e96;
+  --accent: #c1637d;
+  --accent-hover: #a84e68;
   --font-display: 'Cormorant Garamond', 'Noto Serif SC', 'Songti SC', serif;
   --font-body: 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -30,7 +30,7 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -45,7 +45,7 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: #0d0d0f;
+  color: #fff8f4;
 }
 
 img {
@@ -174,13 +174,13 @@ section { padding-block: clamp(4rem, 9vw, 7.5rem); }
 .btn--solid {
   background: var(--accent);
   border-color: var(--accent);
-  color: #0d0d0f;
+  color: #fff8f4;
 }
 
 .btn--solid:hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
-  color: #0d0d0f;
+  color: #fff8f4;
 }
 
 /* ---------- 滚动渐入 ---------- */
@@ -218,7 +218,7 @@ section { padding-block: clamp(4rem, 9vw, 7.5rem); }
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 8, 10, 0.94);
+  background: rgba(26, 21, 22, 0.94);
   backdrop-filter: blur(10px);
   opacity: 0;
   transition: opacity 0.35s var(--ease-out);

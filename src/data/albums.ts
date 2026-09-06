@@ -3,12 +3,16 @@
  *  1. 在 src/assets/albums/ 下新建以 slug 命名的文件夹，把照片丢进去
  *  2. 在下面数组里加一条配置（cover 留空则自动取文件夹第一张）
  * 照片文件名建议用 01.jpg、02.jpg … 排序即展示顺序
+ *
+ * category：用作“分类标签”（即作品集子目录名），会在作品页顶部作为筛选标签展示
+ * tag：专辑小标签，显示在卡片角标上（较短的风格关键词）
  */
 export interface Album {
   slug: string;
   title: string;
   titleEn: string;
   category: string;
+  tag: string;
   year: string;
   location: string;
   description: string;
@@ -17,60 +21,54 @@ export interface Album {
 
 export const albums: Album[] = [
   {
-    slug: 'city-nocturne',
-    title: '城市夜曲',
-    titleEn: 'City Nocturne',
-    category: '城市',
-    year: '2025',
-    location: '上海 / 重庆',
-    description:
-      '霓虹落在雨后的柏油路上，城市在深夜里露出它柔软的一面。这一辑记录了那些只有夜行者才看得见的时刻。',
-    cover: 'city-01',
-  },
-  {
-    slug: 'wild-atlas',
-    title: '山海图志',
-    titleEn: 'Wild Atlas',
-    category: '风光',
-    year: '2024 – 2025',
-    location: '川西 / 福建',
-    description:
-      '从雾中群峰到海岸暮色，自然的尺度让人安静。每一张都是一次漫长的等待，等云、等风、等光。',
-    cover: 'land-01',
-  },
-  {
-    slug: 'portraits-of-light',
-    title: '光的肖像',
-    titleEn: 'Portraits of Light',
-    category: '人像',
-    year: '2025',
-    location: '上海',
-    description:
-      '只用一扇窗、一盏灯，和一段认真的对话。人像摄影拍的不是脸，是那个人藏在表情后面的故事。',
-    cover: 'port-01',
-  },
-  {
-    slug: 'monochrome',
-    title: '黑白独白',
-    titleEn: 'Monologue',
-    category: '黑白',
-    year: '2023 – 2025',
-    location: '街头',
-    description:
-      '去掉颜色之后，世界只剩下形状、影调和情绪。黑白是摄影最初的语言，也是最诚实的语言。',
-    cover: 'bw-01',
-  },
-  {
-    slug: 'daily-fragments',
-    title: '日常切片',
-    titleEn: 'Daily Fragments',
-    category: '生活',
+    slug: 'sweet-doll',
+    title: '妹宝解锁新裙子',
+    titleEn: 'Sweet Doll',
+    category: '妹宝解锁新裙子',
+    tag: '甜系',
     year: '2026',
-    location: '随拍',
+    location: '室内 · 影棚',
     description:
-      '不带任务的随手拍。清晨的咖啡、桌上的相机、某个无所事事的下午——生活的底色由这些碎片构成。',
-    cover: 'life-01',
+      '软乎乎的粉色、蕾丝和玩偶——像住进了一个童话橱窗。这一辑想拍的，是女孩子眼里亮晶晶的那份喜欢。',
+    cover: '01',
+  },
+  {
+    slug: 'own-timezone',
+    title: '生活在自己的时区',
+    titleEn: 'Own Time Zone',
+    category: '生活在自己的时区',
+    tag: '酷感',
+    year: '2026',
+    location: '户外 · 山野',
+    description:
+      '轰鸣、尘土、和一颗不被定义的心。每个人都该有自己的节奏——不赶别人的人生，只在自己的时区里自在地活。',
+    cover: '01',
+  },
+  {
+    slug: 'standing-in-light',
+    title: '站在光里感受风',
+    titleEn: 'Stand in the Light',
+    category: '站在光里感受风',
+    tag: '光影',
+    year: '2026',
+    location: '户外 · 黄昏',
+    description:
+      '黄昏把头发染成琥珀色，风正好穿过。人像摄影最迷人的，就是光落在一个人身上时，那一刻的安静与发亮。',
+    cover: '01',
+  },
+  {
+    slug: 'new-chapter',
+    title: '迈入人生新阶段',
+    titleEn: 'New Chapter',
+    category: '迈入人生新阶段',
+    tag: '纪实',
+    year: '2026',
+    location: '民政局 · 记录',
+    description:
+      '喜帖一样的红、藏不住的慌张、和望向彼此的眼神。人生里最值得被记住的，往往是按下快门时你们正在笑的那一秒。',
+    cover: '01',
   },
 ];
 
-export const categories: string[] = ['全部', ...Array.from(new Set(albums.map((a) => a.category)))];
+/** 分类标签：全部 + 各专辑名（作为作品页顶部筛选标签） */
+export const categories: string[] = ['全部', ...albums.map((a) => a.category)];

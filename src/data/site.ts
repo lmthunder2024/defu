@@ -3,26 +3,25 @@
  */
 export const site = {
   /** 摄影师名（英文展示） */
-  name: 'LM Thunder',
+  name: 'DeFu',
   /** 站点品牌名 */
-  brand: '雷芒影像',
+  brand: '德芙殿下',
   /** 身份描述 */
-  role: '独立摄影师',
+  role: '人像摄影师',
   /** 一句话签名 */
-  tagline: '在光与暗的交界处，按下快门。',
+  tagline: '用光影，记住每个动人的瞬间。',
   /** 所在地 */
-  location: '上海 · 中国',
+  location: '中国',
   /** 开始摄影年份 */
-  since: 2019,
+  since: 2021,
   /** 联系邮箱 */
-  email: 'hello@example.com',
+  email: 'hi_ferry@163.com',
   /** 社交链接（按需增删） */
   socials: [
-    { name: '小红书', handle: '@雷芒影像', url: '#' },
-    { name: 'Instagram', handle: '@lmthunder.photo', url: '#' },
-    { name: '500px', handle: 'LMThunder', url: '#' },
-    { name: '微信', handle: 'lmthunder-photo', url: '#' },
+    { name: '抖音', handle: '28205836072', url: 'https://www.douyin.com/' },
+    { name: '微信', handle: 'laoduanAFG777', url: '#' },
+    { name: '邮箱', handle: 'hi_ferry@163.com', url: 'mailto:hi_ferry@163.com' },
   ],
   /** 页面标题后缀 */
-  titleSuffix: '雷芒影像 · 摄影作品集',
+  titleSuffix: '德芙殿下 · 人像摄影作品集',
 };

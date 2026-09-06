@@ -20,7 +20,7 @@ const steps = [
   },
 ];
 
-const scopes = ['人像写真', 'City Walk 约拍', '情侣 / 家庭', '静物产品', '活动记录'];
+const scopes = ['个人写真', '情侣 / 闺蜜', '跟拍记录', '形象照', '私服轻婚纱'];
 ---
 
 <Base title={`联系与约拍 · ${site.titleSuffix}`}>
@@ -42,7 +42,7 @@ const scopes = ['人像写真', 'City Walk 约拍', '情侣 / 家庭', '静物�
         <p class="label" style="margin-top: 2.5rem;">社交账号</p>
         <ul class="social-list">
           {
-            site.socials.map((s) => (
+            site.socials.filter((s) => s.name !== '邮箱').map((s) => (
               <li>
                 <a href={s.url} rel="noopener">
                   <span class="s-name">{s.name}</span>
@@ -53,6 +53,7 @@ const scopes = ['人像写真', 'City Walk 约拍', '情侣 / 家庭', '静物�
             ))
           }
         </ul>
+        <p class="social-note">微信添加请备注「约拍」，抖音私信也可以找到我。</p>
 
         <p class="label" style="margin-top: 2.5rem;">常驻</p>
         <p class="body">{site.location}（可异地 / 旅拍）</p>
@@ -156,6 +157,13 @@ const scopes = ['人像写真', 'City Walk 约拍', '情侣 / 家庭', '静物�
   }
 
   .social-list a:hover .s-arrow { transform: translateX(4px); }
+
+  .social-note {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
 
   .body { color: var(--text-secondary); margin-top: 1rem; }
 

@@ -4,19 +4,19 @@ import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 import { albums } from '../data/albums';
 import { getMoments } from '../lib/photos';
-import portrait from '../assets/about-portrait.png';
+import portrait from '../assets/about-portrait.jpg';
 
 const moments = getMoments();
 const years = new Date().getFullYear() - site.since + 1;
 
 const gear = [
-  { k: '机身', v: 'Sony A7IV / Fujifilm X100VI' },
-  { k: '镜头', v: '35mm f/1.4 · 85mm f/1.8 · 16-35mm f/4' },
-  { k: '后期', v: 'Lightroom · Capture One' },
-  { k: '胶片', v: '偶尔拍一点 Portra 400' },
+  { k: '机身', v: 'Sony A7 IV / A7C' },
+  { k: '镜头', v: '85mm f/1.8 · 55mm f/1.8 · 35mm f/1.4' },
+  { k: '后期', v: 'Lightroom · Photoshop' },
+  { k: '偏好', v: '自然光 · 长焦压缩 · 弱光氛围' },
 ];
 
-const keywords = ['自然光', '低饱和', '等待', '不摆拍', '真实感', '氛围优先'];
+const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不摆拍', '细节与发丝', '黄昏逆光'];
 ---
 
 <Base title={`关于 · ${site.titleSuffix}`}>
@@ -24,20 +24,20 @@ const keywords = ['自然光', '低饱和', '等待', '不摆拍', '真实感', 
   <section class="container about-hero">
     <div class="about-text js-reveal">
       <p class="label">About</p>
-      <h1 class="display-lg">镜头·这一侧</h1>
+      <h1 class="display-lg">镜头这一侧 · 的我</h1>
       <p class="lead">
-        我是 {site.name}，一名生活在 {site.location} 的{site.role}。
-        {site.since} 年拿起相机，从拍楼下的一只猫开始，一路拍到了山川湖海。
+        我是 {site.name}，一名{site.role}。喜欢把镜头对准人——<br />
+        拍他们笑、拍他们安静、拍他们被光找到的那一刻。
       </p>
       <p class="body">
-        我不太追求"完美"的照片——比起糖水片，我更愿意留住光线落在一个人脸上的那个瞬间，
-        或是城市在深夜里偶然露出的一点温柔。快门是诚实的朋友，它记得所有你自己都快忘了的时刻。
+        比起"标准好看"的糖水片，我更想留住真实的你。每个人身上都有一束只有他能发出来的光，
+        我的工作，就是在那束光最亮的瞬间按下快门。不用刻意摆姿势，放松地做你自己就好。
       </p>
 
       <dl class="stats">
         <div><dt>{years}</dt><dd>年快门生涯</dd></div>
-        <div><dt>{albums.length}</dt><dd>主题专辑</dd></div>
-        <div><dt>50k+</dt><dd>累计快门数</dd></div>
+        <div><dt>{albums.length}</dt><dd>人像主题专辑</dd></div>
+        <div><dt>∞</dt><dd>想记住的笑容</dd></div>
       </dl>
     </div>
 
@@ -70,7 +70,7 @@ const keywords = ['自然光', '低饱和', '等待', '不摆拍', '真实感', 
           {keywords.map((k) => (<li>{k}</li>))}
         </ul>
         <p class="body">
-          不摆拍、不过度修图。最好的一张永远在下一卷里。
+          不摆拍、不过度修图。最好的一张，往往是你最放松的那个瞬间。
         </p>
       </div>
     </div>
@@ -83,7 +83,8 @@ const keywords = ['自然光', '低饱和', '等待', '不摆拍', '真实感', 
       <span class="count">Beyond the Lens · {moments.length} 张</span>
     </div>
     <p class="moments-note js-reveal">
-      一些关于我自己的碎片——拍摄现场、旅途、以及大量没在工作的时刻。都是随手拍，不修图。
+      一些关于我自己的碎片——被光找到的时刻、在路上、以及大量没在工作的开心。
+      都是随手拍，不修图。也想偶尔被你记住。
     </p>
 
     <div class="masonry moments-wall">
