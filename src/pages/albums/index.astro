@@ -1,0 +1,136 @@
+---
+import Base from '../../layouts/Base.astro';
+import AlbumCard from '../../components/AlbumCard.astro';
+import { site } from '../../data/site';
+import { albums, categories } from '../../data/albums';
+import { getAlbumCover } from '../../lib/photos';
+
+const cards = albums.map((a) => ({
+  album: a,
+  cover: getAlbumCover(a.slug, a.cover),
+}));
+
+// 五个专辑的编辑感排布：宽 / 窄 / 窄 / 宽 / 通栏
+const spans = ['span 8', 'span 4', 'span 4', 'span 8', 'span 12'];
+const variants = ['wide', 'tall', 'tall', 'wide', 'wide'] as const;
+---
+
+<Base title={`作品 · ${site.titleSuffix}`}>
+  <section class="container">
+    <header class="page-head js-reveal">
+      <p class="label">Works</p>
+      <h1 class="display-lg">作品</h1>
+      <p class="page-head__sub">
+        按主题整理的 {albums.length} 个专辑 —— 从城市深夜到山海之间。
+      </p>
+    </header>
+
+    <div class="filter-bar js-reveal" role="group" aria-label="按分类筛选">
+      {
+        categories.map((c, i) => (
+          <button class={i === 0 ? 'is-active' : ''} data-filter={c}>
+            {c}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="albums-grid">
+      {
+        cards.map(({ album, cover }, i) =>
+          cover ? (
+            <div
+              class="slot"
+              data-category={album.category}
+              style={`grid-column: ${spans[i % spans.length]}; --reveal-delay: ${(i % 4) * 80}ms`}
+            >
+              <AlbumCard
+                album={album}
+                cover={cover.src}
+                variant={variants[i % variants.length]}
+                index={i % 4}
+                eager={i < 2}
+              />
+            </div>
+          ) : null,
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const slots = document.querySelectorAll<HTMLElement>('.albums-grid .slot');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const f = btn.dataset.filter;
+      slots.forEach((s) => {
+        const show = f === '全部' || s.dataset.category === f;
+        s.hidden = !show;
+        if (show) {
+          const card = s.querySelector('.js-reveal');
+          card?.classList.add('is-visible');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .page-head {
+    padding-top: calc(var(--nav-h) + 4rem);
+    margin-bottom: 3rem;
+  }
+
+  .page-head__sub {
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    max-width: 40ch;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 3rem;
+  }
+
+  .filter-bar button {
+    padding: 0.5rem 1.3rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--text-secondary);
+    transition: all 0.35s var(--ease-out);
+  }
+
+  .filter-bar button:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+
+  .filter-bar button.is-active {
+    border-color: var(--accent);
+    color: var(--accent-hover);
+    background: rgba(200, 169, 126, 0.08);
+  }
+
+  .albums-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2.5rem 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .slot--narrow { padding-top: 3rem; }
+
+  @media (max-width: 900px) {
+    .albums-grid { grid-template-columns: 1fr; }
+    .albums-grid .slot { grid-column: 1 / -1 !important; }
+  }
+</style>

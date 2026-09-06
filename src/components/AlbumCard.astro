@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Album } from '../data/albums';
+
+interface Props {
+  album: Album;
+  cover: ImageMetadata;
+  /** 布局变体：wide 宽幅 / tall 窄高 / half 半幅 */
+  variant?: 'wide' | 'tall' | 'half';
+  eager?: boolean;
+  index?: number;
+}
+
+const { album, cover, variant = 'half', eager = false, index = 0 } = Astro.props;
+const aspect =
+  variant === 'wide' ? '16 / 10' : variant === 'tall' ? '4 / 5' : '3 / 2';
+---
+
+<a
+  class="album-card js-reveal"
+  href={`/albums/${album.slug}/`}
+  data-category={album.category}
+  style={`--reveal-delay: ${index * 90}ms`}
+>
+  <div class="frame frame--hover media" style={`aspect-ratio: ${aspect}`}>
+    <Image
+      src={cover}
+      alt={`${album.title} —— ${album.description.slice(0, 20)}`}
+      widths={[420, 720, 1080, 1400]}
+      sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 640px"
+      loading={eager ? 'eager' : 'lazy'}
+    />
+    <span class="tag">{album.category}</span>
+  </div>
+  <div class="meta">
+    <div>
+      <h3>{album.title}<span class="en"> / {album.titleEn}</span></h3>
+      <p class="sub">{album.year} · {album.location}</p>
+    </div>
+    <span class="arrow" aria-hidden="true">→</span>
+  </div>
+</a>
+
+<style>
+  .album-card { display: block; }
+
+  .media { border-radius: 6px; }
+
+  .tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1;
+    padding: 0.3rem 0.85rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg-overlay);
+    backdrop-filter: blur(8px);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    color: var(--text-secondary);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+
+  .en {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .sub {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  .arrow {
+    color: var(--text-muted);
+    transition: transform 0.4s var(--ease-out), color 0.4s var(--ease-out);
+  }
+
+  .album-card:hover .arrow {
+    transform: translateX(6px);
+    color: var(--accent-hover);
+  }
+</style>

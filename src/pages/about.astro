@@ -1,0 +1,263 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { albums } from '../data/albums';
+import { getMoments } from '../lib/photos';
+import portrait from '../assets/about-portrait.png';
+
+const moments = getMoments();
+const years = new Date().getFullYear() - site.since + 1;
+
+const gear = [
+  { k: '机身', v: 'Sony A7IV / Fujifilm X100VI' },
+  { k: '镜头', v: '35mm f/1.4 · 85mm f/1.8 · 16-35mm f/4' },
+  { k: '后期', v: 'Lightroom · Capture One' },
+  { k: '胶片', v: '偶尔拍一点 Portra 400' },
+];
+
+const keywords = ['自然光', '低饱和', '等待', '不摆拍', '真实感', '氛围优先'];
+---
+
+<Base title={`关于 · ${site.titleSuffix}`}>
+  <!-- 关于我 -->
+  <section class="container about-hero">
+    <div class="about-text js-reveal">
+      <p class="label">About</p>
+      <h1 class="display-lg">镜头·这一侧</h1>
+      <p class="lead">
+        我是 {site.name}，一名生活在 {site.location} 的{site.role}。
+        {site.since} 年拿起相机，从拍楼下的一只猫开始，一路拍到了山川湖海。
+      </p>
+      <p class="body">
+        我不太追求"完美"的照片——比起糖水片，我更愿意留住光线落在一个人脸上的那个瞬间，
+        或是城市在深夜里偶然露出的一点温柔。快门是诚实的朋友，它记得所有你自己都快忘了的时刻。
+      </p>
+
+      <dl class="stats">
+        <div><dt>{years}</dt><dd>年快门生涯</dd></div>
+        <div><dt>{albums.length}</dt><dd>主题专辑</dd></div>
+        <div><dt>50k+</dt><dd>累计快门数</dd></div>
+      </dl>
+    </div>
+
+    <figure class="about-portrait js-reveal" style="--reveal-delay: 120ms">
+      <div class="frame portrait-frame">
+        <Image
+          src={portrait}
+          alt={`${site.name} 的肖像照`}
+          widths={[480, 720, 960]}
+          sizes="(max-width: 900px) 100vw, 460px"
+          loading="eager"
+        />
+      </div>
+      <figcaption>相机后面的人 · Self portrait</figcaption>
+    </figure>
+  </section>
+
+  <!-- 器材与理念 -->
+  <section class="bg-elevated">
+    <div class="container gear-grid">
+      <div class="js-reveal">
+        <p class="label">我的器材</p>
+        <dl class="gear-list">
+          {gear.map((g) => (<div><dt>{g.k}</dt><dd>{g.v}</dd></div>))}
+        </dl>
+      </div>
+      <div class="js-reveal" style="--reveal-delay: 120ms">
+        <p class="label">拍摄理念</p>
+        <ul class="keywords">
+          {keywords.map((k) => (<li>{k}</li>))}
+        </ul>
+        <p class="body">
+          不摆拍、不过度修图。最好的一张永远在下一卷里。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 镜头之外：摄影师本人照片墙 -->
+  <section class="container">
+    <div class="section-title js-reveal">
+      <h2>镜头·之外</h2>
+      <span class="count">Beyond the Lens · {moments.length} 张</span>
+    </div>
+    <p class="moments-note js-reveal">
+      一些关于我自己的碎片——拍摄现场、旅途、以及大量没在工作的时刻。都是随手拍，不修图。
+    </p>
+
+    <div class="masonry moments-wall">
+      {
+        moments.map((m, i) => (
+          <figure class="js-reveal" style={`--reveal-delay: ${(i % 3) * 90}ms`}>
+            <div class="frame frame--hover moment-frame">
+              <Image
+                src={m.src}
+                alt={m.caption || '幕后花絮'}
+                widths={[420, 720, 1080]}
+                sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+                loading={i < 2 ? 'eager' : 'lazy'}
+              />
+            </div>
+            {m.caption && <figcaption>{m.caption}</figcaption>}
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-elevated cta">
+    <div class="container cta-inner js-reveal">
+      <h2 class="display-lg">想看更多，或者<br />想<em>被我拍</em>？</h2>
+      <div class="cta-actions">
+        <a href="/contact/" class="btn btn--solid">聊聊约拍</a>
+        <a href="/albums/" class="btn">先看作品</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about-hero {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+    padding-top: calc(var(--nav-h) + 4rem);
+  }
+
+  .lead {
+    font-size: 1.08rem;
+    color: var(--text-secondary);
+    margin: 1.75rem 0 1.1rem;
+    max-width: 48ch;
+  }
+
+  .body {
+    color: var(--text-secondary);
+    max-width: 52ch;
+  }
+
+  .stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .stats dt {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+
+  .stats dd {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+  }
+
+  .portrait-frame {
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+  }
+
+  .about-portrait figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  .bg-elevated { background: var(--bg-elevated); }
+
+  .gear-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .gear-list {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .gear-list div {
+    display: grid;
+    grid-template-columns: 5em 1fr;
+    gap: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gear-list dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    padding-top: 0.2rem;
+  }
+
+  .gear-list dd { color: var(--text-secondary); }
+
+  .keywords {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .keywords li {
+    padding: 0.45rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+  }
+
+  .keywords + .body { margin-top: 1.75rem; }
+
+  .moments-note {
+    color: var(--text-secondary);
+    max-width: 52ch;
+    margin: -1.25rem 0 2.5rem;
+  }
+
+  .moment-frame { border-radius: 6px; }
+
+  .moments-wall figure figcaption {
+    margin-top: 0.7rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .cta-inner {
+    display: grid;
+    gap: 2.25rem;
+    justify-items: start;
+  }
+
+  .cta em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 900px) {
+    .about-hero { grid-template-columns: 1fr; gap: 3rem; }
+    .gear-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .stats { gap: 2rem; }
+  }
+</style>

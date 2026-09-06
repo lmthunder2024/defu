@@ -1,0 +1,237 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import AlbumCard from '../components/AlbumCard.astro';
+import { site } from '../data/site';
+import { albums } from '../data/albums';
+import { getAlbumCover } from '../lib/photos';
+import heroImg from '../assets/hero.png';
+
+const featured = albums.slice(0, 4).map((a) => ({
+  album: a,
+  cover: getAlbumCover(a.slug, a.cover),
+}));
+const yearSpan = new Date().getFullYear() - site.since + 1;
+
+// 不对称编辑感网格：宽 / 窄 / 窄 / 宽
+const patterns = ['wide', 'tall', 'tall', 'wide'] as const;
+---
+
+<Base title={`${site.brand} · ${site.name} 摄影作品集`}>
+  <!-- Hero -->
+  <section class="hero" aria-label="首页主视觉">
+    <div class="hero__media">
+      <Image
+        src={heroImg}
+        alt="暮色中的雾霭群山"
+        widths={[960, 1440, 1920]}
+        sizes="100vw"
+        loading="eager"
+        class="hero__img"
+      />
+      <div class="hero__scrim" aria-hidden="true"></div>
+    </div>
+
+    <div class="container hero__content">
+      <p class="label">{site.role} · {site.location}</p>
+      <h1 class="display-xl">
+        在光与暗的<em>交界处</em><br />按下快门
+      </h1>
+      <p class="hero__intro">
+        我是 {site.name}，记录城市夜色、山海气象，与每一个认真生活的人。
+      </p>
+      <div class="hero__cta">
+        <a href="/albums/" class="btn btn--solid">进入作品</a>
+        <a href="/contact/" class="btn">约拍合作</a>
+      </div>
+    </div>
+
+    <div class="hero__meta" aria-hidden="true">
+      <span>{site.since} 年拿起相机</span>
+      <span class="dot"></span>
+      <span>{albums.length} 个专辑</span>
+      <span class="dot"></span>
+      <span>{yearSpan} 年快门生涯</span>
+    </div>
+  </section>
+
+  <!-- 精选作品 -->
+  <section class="container">
+    <div class="section-title js-reveal">
+      <h2>精选作品</h2>
+      <span class="count">Selected Works</span>
+      <a href="/albums/" class="all-link">全部作品 →</a>
+    </div>
+
+    <div class="works-grid">
+      {
+        featured.map(({ album, cover }, i) =>
+          cover ? (
+            <div class={`slot slot--${i}`}>
+              <AlbumCard
+                album={album}
+                cover={cover.src}
+                variant={patterns[i]}
+                index={i}
+                eager={i === 0}
+              />
+            </div>
+          ) : null,
+        )
+      }
+    </div>
+  </section>
+
+  <!-- 摄影陈述 -->
+  <section class="statement">
+    <div class="container statement__inner js-reveal">
+      <hr class="hairline" />
+      <blockquote>
+        摄影不是记录世界本来的样子，<br />
+        而是记录<em>它打动我的那一秒</em>。
+      </blockquote>
+      <hr class="hairline" />
+      <a href="/about/" class="btn">认识镜头背后的我</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    padding-block: 0;
+    overflow: hidden;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(13, 13, 15, 0.92), rgba(13, 13, 15, 0.15) 45%),
+      linear-gradient(to right, rgba(13, 13, 15, 0.55), transparent 60%);
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--nav-h);
+  }
+
+  .hero__content .label { margin-bottom: 1.4rem; }
+
+  .hero__content h1 {
+    margin-bottom: 1.5rem;
+    max-width: 12ch;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero__intro {
+    max-width: 42ch;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    font-size: 1.02rem;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero__meta {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* 精选网格 */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2.5rem 2rem;
+  }
+
+  .slot--0 { grid-column: span 8; }
+  .slot--1 { grid-column: span 4; padding-top: 3.5rem; }
+  .slot--2 { grid-column: span 4; }
+  .slot--3 { grid-column: span 8; padding-top: 3.5rem; }
+
+  .all-link {
+    margin-left: auto;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .all-link:hover { color: var(--accent-hover); }
+
+  /* 陈述 */
+  .statement {
+    background: var(--bg-elevated);
+    text-align: center;
+  }
+
+  .statement__inner {
+    display: grid;
+    justify-items: center;
+    gap: 2.5rem;
+    max-width: 720px;
+  }
+
+  blockquote {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.6vw, 2.3rem);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  blockquote em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  @media (max-width: 900px) {
+    .works-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .slot--0, .slot--1, .slot--2, .slot--3 {
+      grid-column: 1 / -1;
+      padding-top: 0;
+    }
+    .hero__meta { font-size: 0.62rem; gap: 0.8rem; }
+  }
+</style>

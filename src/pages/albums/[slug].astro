@@ -1,0 +1,195 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+import { albums } from '../../data/albums';
+import { getAlbumPhotos } from '../../lib/photos';
+
+export function getStaticPaths() {
+  return albums.map((album) => ({ params: { slug: album.slug } }));
+}
+
+const album = albums.find((a) => a.slug === Astro.params.slug)!;
+const photos = getAlbumPhotos(album.slug);
+
+// 灯箱大图：构建期生成 1600px WebP
+const lightboxImages = photos.map((p) =>
+  getImage({ src: p.src, width: 1600, format: 'webp' }),
+);
+---
+
+<Base title={`${album.title} · ${site.titleSuffix}`} description={album.description}>
+  <article class="container">
+    <header class="album-head js-reveal">
+      <a class="back" href="/albums/">← 全部作品</a>
+      <p class="label">{album.category} · {album.year}</p>
+      <h1 class="display-lg">
+        {album.title}<span class="en"> / {album.titleEn}</span>
+      </h1>
+      <p class="meta">{album.location} · {photos.length} 张照片</p>
+      <p class="desc">{album.description}</p>
+    </header>
+
+    <div class="masonry album-photos">
+      {
+        photos.map((photo, i) => (
+          <figure class="js-reveal" style={`--reveal-delay: ${(i % 3) * 80}ms`}>
+            <button
+              class="photo-btn"
+              data-lightbox
+              data-src={lightboxImages[i].src}
+              data-caption={`${album.title} · ${String(i + 1).padStart(2, '0')}`}
+              aria-label={`放大查看第 ${i + 1} 张照片`}
+            >
+              <Image
+                src={photo.src}
+                alt={`${album.title} 第 ${i + 1} 张`}
+                widths={[420, 720, 1080]}
+                sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+                loading={i < 3 ? 'eager' : 'lazy'}
+              />
+              <span class="index" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </button>
+          </figure>
+        ))
+      }
+    </div>
+  </article>
+
+  <!-- 灯箱 -->
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="照片大图浏览">
+    <button class="lightbox__close" aria-label="关闭">✕</button>
+    <button class="lightbox__nav lightbox__nav--prev" aria-label="上一张">←</button>
+    <img alt="" />
+    <button class="lightbox__nav lightbox__nav--next" aria-label="下一张">→</button>
+    <p class="lightbox__caption"></p>
+    <p class="lightbox__counter"></p>
+  </div>
+</Base>
+
+<script>
+  function initLightbox() {
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-lightbox]'));
+    const lightbox = document.querySelector<HTMLElement>('.lightbox');
+    if (!lightbox || items.length === 0) return;
+
+    const img = lightbox.querySelector('img')!;
+    const caption = lightbox.querySelector<HTMLElement>('.lightbox__caption')!;
+    const counter = lightbox.querySelector<HTMLElement>('.lightbox__counter')!;
+    let current = 0;
+    let lastFocus: HTMLElement | null = null;
+
+    function show(i: number) {
+      current = (i + items.length) % items.length;
+      const item = items[current];
+      img.src = item.dataset.src ?? '';
+      img.alt = item.getAttribute('aria-label') ?? '';
+      caption.textContent = item.dataset.caption ?? '';
+      counter.textContent = `${current + 1} / ${items.length}`;
+    }
+
+    function open(i: number) {
+      lastFocus = document.activeElement as HTMLElement | null;
+      show(i);
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      lightbox.querySelector<HTMLElement>('.lightbox__close')?.focus();
+    }
+
+    function close() {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+      lastFocus?.focus();
+    }
+
+    items.forEach((item, i) => {
+      item.addEventListener('click', () => open(i));
+    });
+
+    lightbox.querySelector('.lightbox__close')?.addEventListener('click', close);
+    lightbox.querySelector('.lightbox__nav--prev')?.addEventListener('click', () => show(current - 1));
+    lightbox.querySelector('.lightbox__nav--next')?.addEventListener('click', () => show(current + 1));
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+  }
+
+  initLightbox();
+</script>
+
+<style>
+  .album-head {
+    padding-top: calc(var(--nav-h) + 3.5rem);
+    max-width: 720px;
+    margin-bottom: 3.5rem;
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+    margin-bottom: 2.25rem;
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .back:hover { color: var(--accent-hover); }
+
+  .album-head .label { margin-bottom: 1.1rem; }
+
+  .album-head .en {
+    font-style: italic;
+    font-size: 0.5em;
+    color: var(--text-muted);
+  }
+
+  .meta {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+  }
+
+  .desc {
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    max-width: 46ch;
+  }
+
+  .photo-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-elevated);
+    cursor: zoom-in;
+  }
+
+  .index {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.7rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+  }
+
+  .photo-btn:hover .index { opacity: 1; }
+
+  .album-photos { padding-bottom: 2rem; }
+</style>
