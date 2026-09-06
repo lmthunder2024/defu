@@ -177,6 +177,14 @@ const lightboxImages = photos.map((p) =>
     cursor: zoom-in;
   }
 
+  /* 关键修复：覆盖 Astro Image 生成的原生 width/height 属性，
+     避免瀑布流把图片锁死高度导致拉伸变形，让它随列宽等比缩放 */
+  .photo-btn img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .index {
     position: absolute;
     right: 0.9rem;
