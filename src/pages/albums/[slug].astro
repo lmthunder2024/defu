@@ -12,9 +12,13 @@ export function getStaticPaths() {
 const album = albums.find((a) => a.slug === Astro.params.slug)!;
 const photos = getAlbumPhotos(album.slug);
 
-// 灯箱大图：构建期生成 1600px WebP
-const lightboxImages = photos.map((p) =>
-  getImage({ src: p.src, width: 1600, format: 'webp' }),
+// 展示档位：原图普遍 1259–1344px 宽，单档 1100w（无放大、无多余变体）。
+// 灯箱复用与 <Image width={1100}> 完全相同的 transform → 构建期自动去重为同一文件，
+// 打开灯箱零额外下载。注意 getImage 是异步的，必须 await，否则 .src 为 undefined、
+// data-src 属性会被 Astro 静默丢弃（此前的灯箱失效 bug 根因）。
+const PHOTO_W = 1100;
+const lightboxImages = await Promise.all(
+  photos.map((p) => getImage({ src: p.src, width: PHOTO_W, format: 'webp' })),
 );
 ---
 
@@ -44,8 +48,8 @@ const lightboxImages = photos.map((p) =>
               <Image
                 src={photo.src}
                 alt={`${album.title} 第 ${i + 1} 张`}
-                widths={[420, 720, 1080]}
-                sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+                width={1100}
+                format="webp"
                 loading={i < 3 ? 'eager' : 'lazy'}
               />
               <span class="index" aria-hidden="true">

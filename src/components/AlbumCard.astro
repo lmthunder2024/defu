@@ -27,8 +27,8 @@ const aspect =
     <Image
       src={cover}
       alt={`${album.title} —— ${album.description.slice(0, 20)}`}
-      widths={[420, 720, 1080, 1400]}
-      sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 640px"
+      width={1100}
+      format="webp"
       loading={eager ? 'eager' : 'lazy'}
     />
     <span class="tag">{album.tag}</span>

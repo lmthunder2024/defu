@@ -39,8 +39,8 @@ const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不
         <Image
           src={portrait}
           alt={`${site.name} 的肖像照`}
-          widths={[480, 720, 960]}
-          sizes="(max-width: 900px) 100vw, 460px"
+          width={1100}
+          format="webp"
           loading="eager"
         />
       </div>
@@ -82,8 +82,8 @@ const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不
               <Image
                 src={m.src}
                 alt={m.caption || '幕后花絮'}
-                widths={[420, 720, 1080]}
-                sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+                width={1100}
+                format="webp"
                 loading={i < 2 ? 'eager' : 'lazy'}
               />
             </div>
