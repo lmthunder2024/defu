@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
 <style>
   footer {
     border-top: 1px solid var(--border);
-    padding: 4.5rem 0 2.5rem;
+    padding: 4.5rem 0 calc(2.5rem + env(safe-area-inset-bottom, 0px));
     background: var(--bg-elevated);
   }
 

@@ -31,6 +31,8 @@
 html {
   scroll-behavior: smooth;
   color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -64,6 +66,17 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+/* 移动端手感：去除点击高亮、取消双击缩放延迟 */
+a,
+button,
+[role='button'],
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 :focus-visible {

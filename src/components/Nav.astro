@@ -44,7 +44,8 @@ const isActive = (href: string) =>
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 50;
-    height: var(--nav-h);
+    height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
     display: flex;
     align-items: center;
     transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
