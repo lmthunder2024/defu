@@ -9,13 +9,6 @@ import portrait from '../assets/about-portrait.jpg';
 const moments = getMoments();
 const years = new Date().getFullYear() - site.since + 1;
 
-const gear = [
-  { k: '机身', v: 'Sony A7 IV / A7C' },
-  { k: '镜头', v: '85mm f/1.8 · 55mm f/1.8 · 35mm f/1.4' },
-  { k: '后期', v: 'Lightroom · Photoshop' },
-  { k: '偏好', v: '自然光 · 长焦压缩 · 弱光氛围' },
-];
-
 const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不摆拍', '细节与发丝', '黄昏逆光'];
 ---
 
@@ -55,21 +48,15 @@ const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不
     </figure>
   </section>
 
-  <!-- 器材与理念 -->
+  <!-- 拍摄理念 -->
   <section class="bg-elevated">
-    <div class="container gear-grid">
+    <div class="container philosophy">
       <div class="js-reveal">
-        <p class="label">我的器材</p>
-        <dl class="gear-list">
-          {gear.map((g) => (<div><dt>{g.k}</dt><dd>{g.v}</dd></div>))}
-        </dl>
-      </div>
-      <div class="js-reveal" style="--reveal-delay: 120ms">
         <p class="label">拍摄理念</p>
         <ul class="keywords">
           {keywords.map((k) => (<li>{k}</li>))}
         </ul>
-        <p class="body">
+        <p class="body philosophy-text">
           不摆拍、不过度修图。最好的一张，往往是你最放松的那个瞬间。
         </p>
       </div>
@@ -176,34 +163,15 @@ const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不
 
   .bg-elevated { background: var(--bg-elevated); }
 
-  .gear-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+  .philosophy {
+    max-width: 760px;
   }
 
-  .gear-list {
-    margin-top: 1.5rem;
-    display: grid;
-    gap: 1.1rem;
+  .philosophy .keywords {
+    justify-content: flex-start;
   }
 
-  .gear-list div {
-    display: grid;
-    grid-template-columns: 5em 1fr;
-    gap: 1.5rem;
-    padding-bottom: 1.1rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .gear-list dt {
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
-    color: var(--text-muted);
-    padding-top: 0.2rem;
-  }
-
-  .gear-list dd { color: var(--text-secondary); }
+  .philosophy-text { margin-top: 2rem; }
 
   .keywords {
     list-style: none;
@@ -258,7 +226,6 @@ const keywords = ['自然光', '真实感', '色调温和', '情绪优先', '不
 
   @media (max-width: 900px) {
     .about-hero { grid-template-columns: 1fr; gap: 3rem; }
-    .gear-grid { grid-template-columns: 1fr; gap: 3rem; }
     .stats { gap: 2rem; }
   }
 </style>

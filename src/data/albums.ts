@@ -68,6 +68,66 @@ export const albums: Album[] = [
       '喜帖一样的红、藏不住的慌张、和望向彼此的眼神。人生里最值得被记住的，往往是按下快门时你们正在笑的那一秒。',
     cover: '01',
   },
+  {
+    slug: 'coffee-date',
+    title: '一起喝咖啡吧',
+    titleEn: 'Coffee Date',
+    category: '一起喝咖啡吧',
+    tag: '清新',
+    year: '2026',
+    location: '户外 · 咖啡店',
+    description:
+      '柳枝垂下来，风把阳光揉得软软的。点一杯拿铁，在窗边坐一下午——约会不一定要去哪里，能坐下来好好说话的时光就很珍贵。',
+    cover: '01',
+  },
+  {
+    slug: 'free-spirit',
+    title: '你本就如此肆意洒脱',
+    titleEn: 'Free Spirit',
+    category: '你本就如此肆意洒脱',
+    tag: '洒脱',
+    year: '2026',
+    location: '户外 · 麦田',
+    description:
+      '蓝天很低，风很满，黑色的裙摆被吹得鼓起。闭上眼张开手，不用做谁眼中的样子——你本就该这样，肆意又洒脱地活着。',
+    cover: '01',
+  },
+  {
+    slug: 'keep-being-you',
+    title: '继续做自己',
+    titleEn: 'Keep Being You',
+    category: '继续做自己',
+    tag: '成长',
+    year: '2026',
+    location: '室内 · 生日',
+    description:
+      '又长一岁，蛋糕上的光映进眼睛里。愿你不被年龄和期待框住，继续做自己——那个会大笑、会好奇、始终发着光的你。',
+    cover: '01',
+  },
+  {
+    slug: 'birthday-kid',
+    title: '生日快乐小宝',
+    titleEn: 'Happy Birthday',
+    category: '生日快乐小宝',
+    tag: '童趣',
+    year: '2026',
+    location: '室内 · 家庭',
+    description:
+      '两岁啦！气球、蛋糕和还攥着手指的小手。孩子长大的每一格都值得被郑重记下——等ta再大一点，回看这一刻，全是温柔的瞬间。',
+    cover: '01',
+  },
+  {
+    slug: 'misty-cafe',
+    title: '雾漫_茄叙',
+    titleEn: 'Misty Cafe',
+    category: '雾漫_茄叙',
+    tag: '情绪',
+    year: '2026',
+    location: '室内 · 暖光',
+    description:
+      '暖光的角落、氤氲的烟雾、和按到一半的胶片感。情绪人像不急着说故事，光是让光线落下来、让气氛慢慢发酵，就够了。',
+    cover: '01',
+  },
 ];
 
 /** 分类标签：全部 + 各专辑名（作为作品页顶部筛选标签） */

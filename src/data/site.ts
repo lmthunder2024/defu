@@ -11,7 +11,7 @@ export const site = {
   /** 一句话签名 */
   tagline: '用光影，记住每个动人的瞬间。',
   /** 所在地 */
-  location: '中国',
+  location: '云南 · 施甸',
   /** 开始摄影年份 */
   since: 2021,
   /** 联系邮箱 */
